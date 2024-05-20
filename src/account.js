@@ -1,0 +1,11 @@
+class account {
+    showLogin() {
+        
+    }
+
+    showSingUp() {
+
+    }
+
+
+}
