@@ -1,12 +1,11 @@
-const { watch } = require('fs');
 const path = require('path');
 
 module.exports = {
     entry: './src/index.js',
     // watch: true,
     output: {
-        path: path.resolve(__dirname, 'dist/assets'),
-        publicPath: '/assets/',
+        path: path.resolve(__dirname, 'dist/assets/'),
+        // publicPath: '/assets/',
         filename: 'bundle.js'
     },
     devServer: {
@@ -27,6 +26,10 @@ module.exports = {
                     presets: ['@babel/preset-env']
                 }
             }
+        },
+        {
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
         }]
     }
 };
