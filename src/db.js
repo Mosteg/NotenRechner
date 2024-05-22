@@ -1,6 +1,6 @@
 import {initializeApp} from "firebase/app";
 import {getFirestore, collection, query, where, onSnapshot, getDocs, getDoc, addDoc, deleteDoc, doc, Timestamp} from "firebase/firestore"
-import {getAuth, signInWithEmailAndPassword} from "firebase/auth";
+import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDbzzLHIe38LK1H1QT3WUbfJkJsWQ-GK8w",
@@ -16,19 +16,52 @@ const auth = getAuth(app);
 
 class DBControl {
     constructor(email, password) {
-        this.email = email;
-        this.password = password;
         this.user = undefined;
         this.userDB = undefined;
         this.data = [];
     }
 
-    login() {
+    login(email, password) {
         return new Promise((resolve, reject) => {
-            signInWithEmailAndPassword(auth, this.email, this.password)
-                .then(user => {
-                    this.user = user.user;
-                    this.userDB = collection(db, user._tokenResponse.localId);
+            signInWithEmailAndPassword(auth, email, password)
+                .then(userCredential => {
+                    this.user = userCredential.user;
+                    this.userDB = collection(db, this.user.uid);
+                    const subjects = query(this.userDB, where('type', '==', 'subject'));
+
+                    localStorage.setItem('email', email);
+                    localStorage.setItem('password', password);
+
+                    return getDocs(subjects);
+                })
+                .then(snapshot => {
+                    snapshot.docs.forEach(doc => this.data.push(doc.data()));
+                    resolve('User singed in and subjects loaded');
+                })
+            .catch(err => reject(err));
+        });
+    }
+
+    register(data) {
+        return new Promise((resolve, reject) => {
+            createUserWithEmailAndPassword(auth, data.email, data.password)
+                .then(userCredential => {
+                    console.log('Created new User');
+                    
+                    this.user = userCredential.user;
+                    const userDetails = {
+                        type: "UserDetails",
+                        firstname: data.firstname,
+                        lastname: data.lastname
+                    };
+                    this.userDB = collection(db, this.user.uid);
+                    addDoc(this.userDB, userDetails)
+                        .then(() => console.log('User details added'))
+                    .catch(err => reject(err));
+
+                    localStorage.setItem('email', data.email);
+                    localStorage.setItem('password', data.password);
+
                     const subjects = query(this.userDB, where('type', '==', 'subject'));
                     return getDocs(subjects);
                 })

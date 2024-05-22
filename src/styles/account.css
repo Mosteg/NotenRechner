@@ -24,16 +24,29 @@
     font-size: 1.5em;
 }
 
-p.title{
+p.title {
     margin: 10px auto;
     font-size: 1.3em;
 }
-p.link{
+p.link {
     display: inline;
     margin: 20px auto 15px auto;
     font-size: 0.80em;
     text-decoration: underline;
     color: rgb(116, 160, 241);
+    cursor: pointer;
+}
+p.message {
+    margin: 3px auto;
+    width: 70%;
+    font-size: 12px;
+    color: rgba(236, 38, 38, 0.7);
+}
+p.forgotPassword {
+    margin: 5px auto;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 input.input {
@@ -79,20 +92,14 @@ input#submit {
     border-radius: 19px;
     border: none;
     background-color: rgb(116, 160, 241);
+    cursor: pointer;
 }
 
-.hide {
-    display: none;
+input#submit.valid {
+    box-shadow: 0px 0px 20px rgba(0, 161, 0, 0.7);
+    background-color: rgba(0, 161, 0, 0.7);
 }
-
-.valid {
-    border: 5px solid rgb(0, 161, 0);
-    /* box-shadow: 0px 0px 50px rgba(0, 161, 0, 0.7); */
-
+input#submit.invalid {
+    box-shadow: 0px 0px 20px rgba(236, 38, 38, 0.7);
+    background-color: rgba(236, 38, 38, 0.7);
 }
-.invalid {
-    border: 5px solid rgb(236, 38, 38);
-    /* box-shadow: 0px 0px 50px rgba(236, 38, 38, 0.7); */
-
-}
-

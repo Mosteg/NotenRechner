@@ -5,7 +5,7 @@ module.exports = {
     // watch: true,
     output: {
         path: path.resolve(__dirname, 'dist/assets/'),
-        // publicPath: '/assets/',
+        publicPath: '/assets/',
         filename: 'bundle.js'
     },
     devServer: {
