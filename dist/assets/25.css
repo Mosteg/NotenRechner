@@ -38,19 +38,12 @@
 }
 .account p.message {
     margin: 3px auto;
-    width: 80%;
+    width: 70%;
     font-size: 12px;
     color: rgba(236, 38, 38, 0.7);
 }
-.account p.message.green {
-    color: rgb(0, 161, 0) !important;
-}
-
 .account p.forgotPassword {
-    position: relative;
-    top: -10px;
-    display: inline-block;
-    margin: 0px auto;
+    margin: 5px auto;
     font-size: 14px;
     text-decoration: underline;
     cursor: pointer;
@@ -93,9 +86,8 @@
 .account input#submit {
     display: block;
     margin: 15px auto;
-    padding: 0px 6%;
     height: 38px;
-    max-width: 50%;
+    width: 100px;
     font-size: 18px;
     border-radius: 19px;
     border: none;
@@ -121,5 +113,6 @@ body {
         font-size: 100%;
         width: 100%;
         height: 100%;
-    }
+    } 
 }
+

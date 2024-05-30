@@ -1,20 +1,18 @@
-import DBControl from "./db.js";
-import './styles/account.css'
-
 const regName = /^[a-zA-Z]{1,}$/;
 const regEmail = /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
 const regPassword = /^[^\s]{6,}$/;
  
 class Account {
-    constructor() {
+    constructor(db) {
+        import ('./styles/account.css');
         this.body = document.querySelector('body');
         this.element;
-        this.db = new DBControl();
+        this.db = db;
     }
 
     showLogin() {
         const html = `
-            <div class="login">
+            <div class="login account">
                 <div class="background">
                     <div class="field">
                         <form class="login-form" novalidate>
@@ -31,9 +29,10 @@ class Account {
             </div>
         `;
         this.body.innerHTML += html;
-        this.element = document.querySelector('.login');
-        const form = document.querySelector('form.login-form');
-        const link = document.querySelector('#singupL');
+        this.element = this.body.querySelector('.login');
+        const form = this.element.querySelector('form.login-form');
+        const link = this.element.querySelector('#singupL');
+        const forgotPassword = this.element.querySelector('#forgotPassword');
         const message = form.querySelector('#message');
 
         return new Promise(resolve => {
@@ -47,17 +46,18 @@ class Account {
                 this.testLogin(data)
                     .then(() => {
                         this.close();
-                        resolve(this.db);
+                        resolve();
                     })
                 .catch(feedback => message.textContent = feedback);
             });
-            link.addEventListener('click', e => this.close().showSingUp().then(data => resolve(this.db)));
+            link.addEventListener('click', e => this.close().showSingUp().then(data => resolve(data)));
+            forgotPassword.addEventListener('click', e => this.close().showForgotPassword().then(data => resolve(data)));
         });
     }
 
     showSingUp() {
         const html = `
-            <div class="singup">
+            <div class="singup account">
                 <div class="background">
                     <div class="field">
                         <form class="singup-form" novalidate>
@@ -84,7 +84,7 @@ class Account {
         return new Promise(resolve => {
             form.addEventListener('submit', e => {
                 e.preventDefault();
-                console.log(e.target[4])
+                
                 const data = {
                     email: e.target[2].value,
                     password: e.target[3].value,
@@ -96,7 +96,7 @@ class Account {
                 this.testSingUp(data, true)
                     .then(() => {
                         this.close(); 
-                        resolve(this.db);
+                        resolve();
                     })
                 .catch(feedback => {
                     message.textContent = feedback;
@@ -126,7 +126,68 @@ class Account {
                     }); 
                 });
             });
-            link.addEventListener('click', e => this.close().showLogin().then(data => resolve(this.db)));
+            link.addEventListener('click', e => this.close().showLogin().then(data => resolve(data)));
+        });
+    }
+
+    showForgotPassword() {
+        const html = `
+            <div class="forgotPassword account">
+                <div class="background">
+                    <div class="field">
+                        <form class="forgotPassword-form" novalidate>
+                            <p class="title">Forgot Password?</p>
+                            <input type="email" class="input" id="email" placeholder="Your email" autocomplete="off">
+                            <p class="link" id="loginL">Login</p>
+                            <input type="submit" id="submit" value="Restet password">
+                            <p class="message" id="message"></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        `;
+        this.body.innerHTML += html;
+        this.element = this.body.querySelector('.forgotPassword');
+        const form = this.element.querySelector('form.forgotPassword-form');
+        const link = this.element.querySelector('#loginL');
+        const message = form.querySelector('#message');
+
+        return new Promise(resolve => {
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                const email = e.target[0].value;
+                if(regEmail.test(email)) {
+                    message.classList.add('green');
+                    message.textContent = 'Wenn die angegebene Email-Adresse existiert, erhalten Sie eine E-Mail, mit der Sie Ihr Passwort zurücksetzen können!';
+                    this.db.sendPasswordResetEmail(email).then(message => console.log(message));
+                    setTimeout(() => message.textContent = '', 4000);
+                } 
+                else {
+                    form.submit.classList.add('invalid');
+                    form.submit.disabled = true;
+                    message.classList.remove('green');
+                    if(email === '') message.textContent = 'Es wurde kein Email-Adresse eingegeben!';
+                    else message.textContent = 'Die eingegebene Email-Adresse ist keine gültige Email-Adresse!';
+
+                    form.addEventListener('keyup', e => {
+                        const email = e.target.value;
+                        console.log(email);
+                        if(regEmail.test(email)) {
+                            message.textContent = '';
+                            form.submit.classList.remove('invalid');
+                            form.submit.disabled = false;
+                        }
+                        else {
+                            form.submit.classList.add('invalid');
+                            form.submit.disabled = true;
+                            message.classList.remove('green');
+                            if(email === '') message.textContent = 'Es wurde kein Email-Adresse eingegeben!';
+                            else message.textContent = 'Die eingegebene Email-Adresse ist keine gültige Email-Adresse!';
+                        }
+                    });   
+                }
+            });
+            link.addEventListener('click', e => this.close().showLogin().then(data => resolve(data)));
         });
     }
 

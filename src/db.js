@@ -1,6 +1,6 @@
 import {initializeApp} from "firebase/app";
 import {getFirestore, collection, query, where, onSnapshot, getDocs, getDoc, addDoc, deleteDoc, doc, Timestamp} from "firebase/firestore"
-import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
+import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail} from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDbzzLHIe38LK1H1QT3WUbfJkJsWQ-GK8w",
@@ -15,7 +15,7 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 class DBControl {
-    constructor(email, password) {
+    constructor() {
         this.user = undefined;
         this.userDB = undefined;
         this.data = [];
@@ -71,6 +71,22 @@ class DBControl {
                 })
             .catch(err => reject(err));
         });
+    }
+
+    logout() {
+        this.user = undefined;
+        this.userDB = undefined;
+        this.data = [];
+
+        localStorage.removeItem('email');
+        localStorage.removeItem('password');
+        console.log('User loged out')
+    }
+
+    async sendPasswordResetEmail(email) {
+        console.log(email);
+        await sendPasswordResetEmail(auth, email);
+        return 'Email send if email is in use';
     }
 }
 

@@ -1,16 +1,16 @@
 import DBControl from "./db.js";
 import Account from "./account.js";
-import { EmailAuthCredential } from "firebase/auth/cordova";
+import UI from "./ui.js";
+import ('./styles/body.css');
+import ('./styles/header.css');
 
+const db = new DBControl();
+const loadingscreen = document.querySelector('body div.loading')
 
-let db;
-init();
-
-localStorage.setItem('email', 'maurice.stegmaier@gmail.com');
-localStorage.setItem('password', 'test123');
+addEventListener('load', () => init());
 
 function init() {
-    db = new DBControl();
+    //in localSorage den nutzer speichern und nicht email und password
     if(localStorage.getItem('email') && localStorage.getItem('password')) {
         db.login(localStorage.getItem('email'), localStorage.getItem('password'))
             .then(message => {
@@ -28,22 +28,31 @@ function init() {
 }
 
 function login() {
-    const account = new Account();
-    account.showLogin().then(datenbank => {
-        db = datenbank;
+    loadingscreen.classList.add('done');
+    let account = new Account(db);
+    account.showLogin().then(() => {
         console.log(db.user);
+        document.querySelector('link[href*="/assets/src_styles_account_css.css"]').remove();
         main();
     })
 }
+function logout() {
+    db.logout();
+    location.reload();
+};
 
 function main() {
-    //code nach dem anmelden
-
+    loadingscreen.classList.remove('done');
+    //---------------------------------------------------------------------------------------------------
     console.log('hier kommt mein code');
+    //code nach dem anmelden
+    const ui = new UI({logout});
 
 
 
 
+    //---------------------------------------------------------------------------------------------------
+    loadingscreen.classList.add('done');
 }
 
 

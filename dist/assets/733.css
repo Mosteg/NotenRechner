@@ -1,0 +1,137 @@
+header {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 120px;
+    width: 100%;
+    min-width: 300px;
+
+    background-color: rgb(116, 160, 241);
+    /* standart font-size ist 16px */
+    font-size: 21px;
+    z-index: 99;
+}
+div.header {
+    height: 100%;
+    width: 100%;
+}
+.header h1.title {
+    display: inline-block;
+    margin: 20px 0px 5px 20px;
+
+}
+.header p.subtitle {
+    display: inline-block;
+    margin: 0px 0px auto 20px;
+
+}
+.header div.container {
+    display: inline-block;
+    position: absolute;
+}
+
+
+.header i#userIcon {
+    height: 21px;
+    width: 21px;
+    padding: 5px;
+}
+.header div.circle {
+    position: absolute;
+    right: 40px;
+    top: 39px;
+    height: 31px;
+    width: 31px;
+    padding: 3px;
+    margin: 0px auto;
+    border: solid 2px black;
+    border-radius: 50px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 21px !important;
+}
+
+
+.header div.userMenu {
+    visibility: hidden;
+    position: absolute;
+    top: 50px;
+    right: 0px;
+    width: 150px;
+    /* height: 200px; */
+
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #cfcfcf;
+    cursor: default;
+
+    text-align: left;
+    color: #000000;
+    font-size: 0.8em;
+
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.header div.userMenu.active {
+    visibility: visible;
+    opacity: 1;
+}
+.header div.userMenu::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    right: 12px;
+    transform: rotate(180deg);
+    margin-left: 40px;
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent;
+    border-top-color: #cfcfcf;
+}
+.header div.selection {
+    margin: 3px;
+    cursor: pointer;
+}
+.header div.selection:hover * {
+    text-decoration: underline;
+}
+.header p.userMenu {
+    display: inline-block;
+    margin: 5px;
+    margin-left: 0px;
+}
+.header i.icon {
+    margin: 5px;
+    margin-right: 0px;
+    width: 20px;
+    height: 20px;
+    text-decoration: none !important;
+}
+.header div.click-area {
+    visibility: hidden;
+    position: relative;
+    cursor: default;
+    top: -40px;
+    right: 130px;
+    width: 170px;
+    height: 140px;
+}
+.header div.click-area.active {
+    visibility: visible;
+}
+
+@media (max-width: 500px) {
+    header {
+        font-size: 0.7em;
+        height: 80px;
+    }
+    .header div.circle {
+        top: 19px;
+        right: 20px;
+    }
+
+}
+
+
+
+
