@@ -43,11 +43,15 @@ function logout() {
 
 function main() {
     loadingscreen.classList.remove('done');
-    //---------------------------------------------------------------------------------------------------
     console.log('hier kommt mein code');
-    //code nach dem anmelden
+    //code nach dem anmelden ----------------------------------------------------------------------------
     const ui = new UI({logout});
 
+
+
+
+
+    
 
 
 

@@ -139,7 +139,7 @@ class Account {
                             <p class="title">Forgot Password?</p>
                             <input type="email" class="input" id="email" placeholder="Your email" autocomplete="off">
                             <p class="link" id="loginL">Login</p>
-                            <input type="submit" id="submit" value="Restet password">
+                            <input type="submit" id="submit" value="Reset password">
                             <p class="message" id="message"></p>
                         </form>
                     </div>
